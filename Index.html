@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for Hadia</title>
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff5f7; text-align: center; color: #d81b60; overflow: hidden; }
+        .screen { height: 100vh; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; transition: 0.5s; }
+        #screen1 { display: flex; background: linear-gradient(to bottom, #fff, #ffebee); }
+        h1 { font-size: 2.5rem; margin: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        button { padding: 15px 40px; font-size: 1.2rem; background: #ff4d6d; color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(255,77,109,0.4); transition: 0.3s; }
+        button:active { transform: scale(0.95); }
+        .cake { font-size: 120px; cursor: pointer; margin: 20px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+        .letter { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: none; margin-top: 20px; line-height: 1.6; color: #444; border-top: 5px solid #ff4d6d; width: 90%; max-width: 350px; }
+        .confetti { position: absolute; width: 10px; height: 10px; border-radius: 50%; animation: fall 3s linear infinite; z-index: 100; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <audio id="song" preload="auto" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="screen1" class="screen">
+        <h1>Hey Hadia! 🌸</h1>
+        <p>Aapke liye ek special surprise hai...</p>
+        <button onclick="goNext(2)">Click to See</button>
+    </div>
+
+    <div id="screen2" class="screen">
+        <h1>Make a Wish & Cut! 🎂</h1>
+        <div class="cake" onclick="goNext(3)">🎂</div>
+        <p style="color: #888;">(Tap the cake with love)</p>
+    </div>
+
+    <div id="screen3" class="screen">
+        <h1 style="color: #ff4d6d;">Happy Birthday Hadia! 🎉</h1>
+        <div id="envelope" style="font-size: 80px; cursor: pointer; animation: bounce 2s infinite;" onclick="openLetter()">✉️</div>
+        <div id="msg" class="letter">
+            <p><b>Dear Hadia,</b></p>
+            <p>You are the <b>most trusted person</b> and I'm so lucky to have you. May your birthday be as wonderful as you are! ❤️</p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            <p><b>Always yours, <br> Maham Nawaz ✨</b></p>
+        </div>
+    </div>
+
+    <script>
+        const song = document.getElementById('song');
+
+        function goNext(num) {
+            // Screen switching
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            const nextScreen = document.getElementById('screen' + num);
+            nextScreen.style.display = 'flex';
+
+            // Music Logic: Start music on first interaction
+            if(num === 2) {
+                song.play().catch(e => {
+                    console.log("Music auto-play blocked, trying again on next click.");
+                });
+            }
+
+            // Confetti Logic
+            if(num === 3) {
+                for(let i=0; i<60; i++) {
+                    createConfetti();
+                }
+            }
+        }
+
+        function openLetter() {
+            document.getElementById('envelope').style.display = 'none';
+            document.getElementById('msg').style.display = 'block';
+        }
+
+        function createConfetti() {
+            const div = document.createElement('div');
+            div.className = 'confetti';
+            div.style.left = Math.random() * 100 + 'vw';
+            div.style.top = '-10px';
+            div.style.backgroundColor = ['#ff4d6d','#ffeb3b','#4cc9f0','#4caf50','#ff9800'][Math.floor(Math.random()*5)];
+            div.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
